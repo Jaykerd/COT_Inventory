@@ -1,0 +1,58 @@
+[
+  {
+    "borrow_transactionid": "AB31D",
+    "borrow_date": "SEPT. 15, 2023",
+    "borrow_duedate": "SEPT. 25, 2023",
+    "borrow_returndate": null,
+    "borrow_bookbatch": 1001,
+    "Book": {
+      "book_id": "1001",
+      "book_title": "Shoe Dog",
+      "book_pubdate": "2022-01-10",
+      "Author": {
+        "aut_id": 1,
+        "aut_firstname": "Josh",
+        "aut_lastname": "Kiyosaki"
+      }
+    },
+    "Student": {
+      "stud_id": "STUD-21378",
+      "stud_firstname": "Juan",
+      "stud_middlename": "Cruz",
+      "stud_lastname": "Santos",
+      "stud_address": "Malaybalay City, Bukidnon",
+      "stud_gender": "Male",
+      "stud_age": 20,
+      "borrow_fines": 0,
+      "borrow_status": "Not Yet Returned"
+    }
+  },
+  {
+    "borrow_transactionid": "AB32E",
+    "borrow_date": "SEPT. 15, 2023",
+    "borrow_duedate": "SEPT. 25, 2023",
+    "borrow_returndate": null,
+    "borrow_bookbatch": 1002,
+    "Book": {
+      "book_id": "1002",
+      "book_title": "The Hard Thing About Hard Things",
+      "book_pubdate": "2023-03-15",
+      "Author": {
+        "aut_id": 2,
+        "aut_firstname": "Knight",
+        "aut_lastname": "Phil"
+      }
+    },
+    "Student": {
+      "stud_id": "STUD-21378",
+      "stud_firstname": "Juan",
+      "stud_middlename": "Cruz",
+      "stud_lastname": "Santos",
+      "stud_address": "Malaybalay City, Bukidnon",
+      "stud_gender": "Male",
+      "stud_age": 20,
+      "borrow_fines": 0,
+      "borrow_status": "Not Yet Returned"
+    }
+  }
+]

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Borrowed Books</title>
+<style>
+  /* Reset and base styles */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body { 
+    font-family: "Book Antiqua", Palatino, serif;
+    background: #f0f2f5;
+    color: #333;
+    padding: 20px;
+  }
+
+  h1 { 
+    text-align: center; 
+    font-size: 2rem; 
+    margin-bottom: 40px; 
+    color: #4a148c;
+  }
+
+  /* Record card */
+  .record { 
+    background: #fff0f6;
+    border-radius: 10px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    padding: 25px; 
+    margin-bottom: 30px; 
+    max-width: 900px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .record:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  }
+
+  /* Buttons */
+  .record-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.2s ease;
+  }
+  .btn-return { background: #7b1fa2; }
+  .btn-return:hover { background: #6a1b9a; }
+  .btn-remove { background: #c62828; }
+  .btn-remove:hover { background: #b71c1c; }
+
+  /* Record content */
+  .record-header {
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    gap: 20px;
+    font-size: 0.95rem;
+  }
+  .info { 
+    flex: 1 1 45%;
+    line-height: 1.6; 
+  }
+
+  .info p { margin-bottom: 8px; }
+
+  /* Table styling if needed in future */
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 10px; 
+    font-size: 0.9rem;
+  }
+  th, td { 
+    border: 1px solid #ccc; 
+    padding: 8px 10px; 
+    text-align: left; 
+  }
+  th { background: #f8f8f8; }
+
+  /* Status styles */
+  .status { 
+    font-weight: bold; 
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .status["Not Yet Returned"] { color: #ff9800; }
+  .status.Returned { color: #388e3c; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .record-header { flex-direction: column; }
+    .info { flex: 1 1 100%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Borrowed Books</h1>
+<div id="recordsContainer"></div>
+
+<script>
+async function fetchBorrowedBooks() {
+  try {
+    const res = await fetch("http://localhost:3000/borrows"); 
+    if (!res.ok) throw new Error("Network response was not ok");
+    
+    const borrows = await res.json();
+    const container = document.getElementById("recordsContainer");
+    container.innerHTML = "";
+
+    borrows.forEach(borrow => {
+      const record = document.createElement("div");
+      record.classList.add("record");
+
+      record.innerHTML = `
+        <div class="record-actions">
+          <button class="btn btn-return">Return</button>
+          <button class="btn btn-remove">Remove</button>
+        </div>
+
+        <div class="record-header">
+          <div class="info">
+            <p><strong>Transaction ID:</strong> ${borrow.borrow_transactionid}</p>
+            <p><strong>Book ID:</strong> ${borrow.Book.book_id}</p>
+            <p><strong>Book Title:</strong> ${borrow.Book.book_title}</p>
+            <p><strong>Author:</strong> ${borrow.Book.Author.aut_firstname} ${borrow.Book.Author.aut_lastname}</p>
+            <p><strong>Publish Date:</strong> ${borrow.Book.book_pubdate}</p>
+          </div>
+          <div class="info">
+            <p><strong>Student ID:</strong> ${borrow.Student.stud_id}</p>
+            <p><strong>Name:</strong> ${borrow.Student.stud_lastname}, ${borrow.Student.stud_firstname} ${borrow.Student.stud_middlename}</p>
+            <p><strong>Address:</strong> ${borrow.Student.stud_address}</p>
+            <p><strong>Gender:</strong> ${borrow.Student.stud_gender}</p>
+            <p><strong>Age:</strong> ${borrow.Student.stud_age}</p>
+            <p><strong>Status:</strong> <span class="status ${borrow.Student.borrow_status}">${borrow.Student.borrow_status}</span></p>
+            <p><strong>Fines:</strong> ${borrow.Student.borrow_fines}</p>
+            <p><strong>Borrowed Date:</strong> ${borrow.borrow_date}</p>
+            <p><strong>Due Date:</strong> ${borrow.borrow_duedate}</p>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(record);
+    });
+
+  } catch (err) {
+    console.error("Error fetching borrowed books:", err);
+    document.getElementById("recordsContainer").innerHTML =
+      "<p style='color:red; text-align:center'>Failed to load data.</p>";
+  }
+}
+
+fetchBorrowedBooks();
+</script>
+
+</body>
+</html>
